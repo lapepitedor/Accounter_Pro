@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             x:DataType="ViewModels:Haupt_SeiteVM"
+             x:Class="Accounter.View.Haupt_Seite"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             >
+    <!--<NavigationPage.TitleView>
+        <Grid BackgroundColor="Azure">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0"
+                   Text="Accounterrrrrr"
+                   FontSize="Large"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Start"/>
+            <Image Grid.Column="1"
+                   Source="what.png"
+                   Aspect="AspectFill"
+                   HeightRequest="50"
+                   WidthRequest="50"/>
+        </Grid>
+    </NavigationPage.TitleView>-->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="ImageButton">
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="White" Offset="10,20" Radius="20" Opacity="0.2"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="WhiteSmoke"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="FontSize" Value="20"/>
+            </Style>
+            <Style TargetType="Image">
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="MediumBlue" Offset="10,10" Radius="40" Opacity="0.4"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        
+        <BoxView BackgroundColor="Transparent" CornerRadius="0,0,40,40" Opacity="0.3" Margin="15,0,15,20"/>
+        <Grid RowDefinitions="150,*" Margin="5,0,5,0" RowSpacing="10">
+            <BoxView Grid.Row="0" BackgroundColor="Transparent" CornerRadius="0,0,40,40" Opacity="0.8"/>
+            <HorizontalStackLayout Margin="10" Spacing="10" HorizontalOptions="Center">
+                <Image Source="what" Aspect="AspectFit"/>
+                <Label Text="Accounter" FontSize="26" VerticalOptions="Center" TextColor="WhiteSmoke"/>
+            </HorizontalStackLayout>
+
+            <Grid  Grid.Row="1" RowSpacing="10" ColumnSpacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="200"/>
+                    <RowDefinition Height="200"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+
+                <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="5">
+                    <ImageButton Source="inventory" Aspect="AspectFit" HeightRequest="140" WidthRequest="130" Command="{Binding GotoArtikelPageCommand}" IsEnabled="{Binding IsNotBusy}" Style="{StaticResource GlobalButtonStyle}"/>
+                    <Label Text="Artikel" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="0" Grid.Column="1">
+                    <ImageButton  Source="ausleihe_icon" Aspect="AspectFit" HeightRequest="140" WidthRequest="150" Command="{Binding GotoAusleihePageCommand}" IsEnabled="{Binding IsNotBusy}" Style="{StaticResource GlobalButtonStyle}"/>
+                    <Label Text="Ausleihe" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="1" Grid.Column="2" Spacing="5">
+                    <ImageButton Source="einkauf_icon" Aspect="AspectFit" HeightRequest="120" WidthRequest="150" Command="{Binding GotoEinkaufPageCommand}" IsEnabled="{Binding IsNotBusy}" Style="{StaticResource GlobalButtonStyle}"/>
+                    <Label Text="Einkauf" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="5">
+                    <ImageButton Source="kunden_icon" Aspect="AspectFit" HeightRequest="120" WidthRequest="150" Command="{Binding GotoKundenPageCommand}" IsEnabled="{Binding IsNotBusy}" Style="{StaticResource GlobalButtonStyle}"/>
+                    <Label Text="Kunden" HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
+        </Grid>
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Color="WhiteSmoke">
+        </ActivityIndicator>
+    </Grid>
+
+</ContentPage>

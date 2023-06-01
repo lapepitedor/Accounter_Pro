@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:ArtikelVM"
+             x:Class="Accounter.View.Artikel_Seite"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="10"/>
+            </Style>
+            <Style TargetType="Grid" x:Key="Backy">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="LightBlue" Offset="0.1"/>
+                            <GradientStop Color="DeepSkyBlue" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <ViewModels:BooleanToJaNeinConverter x:Key="BooleanToJaNeinConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="60,*,70"
+          RowSpacing="10" Style="{StaticResource Backy}">
+        
+        <Frame Grid.Row="0"
+               BackgroundColor="Transparent"
+               Margin="2" Padding="5"
+               CornerRadius="20"
+               BorderColor="CornflowerBlue">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Entry 
+                   Placeholder="Artikel suchen"
+                   PlaceholderColor="WhiteSmoke"
+                   HeightRequest="70"
+                   WidthRequest="200"
+                   FontSize="15"
+                   Text="{Binding SearchedWord}"/>
+                <Button
+                    Text="Suchen"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    Command="{Binding PerformSearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame     Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   Margin="5,0,5,5"
+                   CornerRadius="10" Padding="5"
+                   BorderColor="CornflowerBlue">
+            <!--<RefreshView Command="{Binding GetArtikelListCommand}"
+                         IsRefreshing="{Binding IsBusy}">-->
+
+            <CollectionView BackgroundColor="Transparent"
+                            ItemsSource="{Binding SearchedArtikels}"
+                            SelectionMode="Single"
+                            EmptyView="Noch keine Daten"
+                            >
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Artikel">
+                        <SwipeView BackgroundColor="Transparent" Margin="0,5,0,0">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Löschen"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:ArtikelVM}},Path=DeleteArtikelCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Update"
+                                               BackgroundColor="LightSeaGreen"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:ArtikelVM}},Path=UpdateArtikelCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <SwipeView.LeftItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Ausleihen"
+                                               BackgroundColor="GreenYellow"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:ArtikelVM}},Path=AusleihenCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Defekt"
+                                               BackgroundColor="MediumOrchid"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:ArtikelVM}},Path=DefektMeldenCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.LeftItems>
+                            <Frame HeightRequest="160"
+                                   Padding="3"
+                                   BackgroundColor="Cornsilk">
+                                <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,1.5*" RowSpacing="2" ColumnSpacing="4">
+
+                                    <Frame Grid.Column="0" 
+                                           Grid.Row="0" 
+                                           Grid.RowSpan="2" 
+                                           Padding="0" BackgroundColor="LightYellow">
+                                        <Image  
+                                            Source="{Binding Image}"
+                                            Aspect="AspectFill"/>
+                                    </Frame>
+
+                                    <Label  Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" 
+                                            Text="{Binding ArtName}"
+                                            FontSize="18"/>
+
+
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="1" Grid.Row="1">
+                                        <VerticalStackLayout Spacing="0">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Ausleihbar:"/>
+                                                <Label Text="{Binding Ausleihbar, Converter={StaticResource BooleanToJaNeinConverter}}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Preis/Tag:   "/>
+                                                <Label Text="{Binding PreisProTag, StringFormat='{0} €'}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Preis/Ges.: "/>
+                                                <Label Text="{Binding PreisGesamt, StringFormat='{0} €'}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                    <Frame  BackgroundColor="Linen" Padding="3" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2">
+                                        <VerticalStackLayout Spacing="5">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Lagerplatz: "/>
+                                                <Label Text="{Binding LagerPlatz}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Bestand: "/>
+                                                <Label Text="{Binding Anzahllager}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Best.limit: "/>
+                                                <Label Text="{Binding BestandLimit}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Barcode: "/>
+                                                <Label Text="{Binding Barcode}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+                                        <VerticalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Ablaufdatum: "/>
+                                                <Label Text="{Binding AblaufsDatum, StringFormat='{0:d}'}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Prüfdatum:     "/>
+                                                <Label Text="{Binding NaechstePruefDatum, StringFormat='{0:d}'}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+            <!--</RefreshView>-->
+        </Frame>
+        <Button Grid.Row="2"
+                Text="Neuer Artikel"
+                HeightRequest="70"
+                WidthRequest="300"
+                Margin="5,5,5,15"
+                Command="{Binding NeuerArtikelSeiteCommand}"
+                IsEnabled="{Binding IsNotBusy}"
+                HorizontalOptions="Center"/>
+        <!--<Button 
+                Text="Refresh"
+                HeightRequest="70"
+                WidthRequest="100"
+                Margin="5,0,0,10"
+                HorizontalOptions="End"
+                Command="{Binding GetArtikelListCommand}"
+                IsEnabled="{Binding IsNotBusy}"/>-->
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.Row="0" Grid.RowSpan="3">
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

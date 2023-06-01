@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Accounter.View.Defekt_Seite"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:DefektVM"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             NavigationPage.HasNavigationBar="True">
+
+    <Grid RowDefinitions="60,*,70"
+          RowSpacing="10">
+
+        <Frame Grid.Row="0"
+               BackgroundColor="Transparent"
+               Margin="2" Padding="5"
+               CornerRadius="20"
+               BorderColor="CornflowerBlue">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Entry 
+                   Placeholder="Artikel suchen"
+                   PlaceholderColor="BlanchedAlmond"
+                   HeightRequest="70"
+                   WidthRequest="200"
+                   FontSize="15"
+                   Text="{Binding SearchedName}"/>
+                <Button
+                    Text="Suchen"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    Command="{Binding PerformSearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame     Grid.Row="1" Grid.RowSpan="2"
+                   BackgroundColor="Transparent"
+                   Margin="5,0,5,5"
+                   CornerRadius="10" Padding="5"
+                   BorderColor="CornflowerBlue">
+
+            <CollectionView BackgroundColor="Transparent"
+                            ItemsSource="{Binding SearchedDefektListe}"
+                            SelectionMode="Single"
+                            EmptyView="Noch keine Daten"
+                            >
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Defekt">
+                        <SwipeView BackgroundColor="Transparent" Margin="0,5,0,0">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Löschen"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:DefektVM}},Path=DeleteDefektCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Update"
+                                               BackgroundColor="LightSeaGreen"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:DefektVM}},Path=UpdateDefektCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame HeightRequest="145"
+                                   Padding="3"
+                                   BackgroundColor="Cornsilk">
+                                <Grid ColumnDefinitions="*,2*" RowDefinitions="*,4*" RowSpacing="2" ColumnSpacing="5">
+
+                                    <Frame Grid.Column="0" 
+                                           Grid.Row="0" 
+                                           Grid.RowSpan="2" 
+                                           Padding="0" BackgroundColor="LightYellow">
+                                        <Image  
+                                            Source="{Binding Image}"
+                                            Aspect="AspectFill"
+                                            HeightRequest="120"
+                                            WidthRequest="120"/>
+                                    </Frame>
+                                    <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="5">
+                                        <Label   
+                                            Text="{Binding ArtName}"
+                                            FontSize="18"/>
+                                        <Label Text="     "/>
+                                        <Label 
+                                            Text="Artik-ID: "
+                                            FontSize="16"/>
+                                        <Label   
+                                            Text="{Binding ArtID}"
+                                            FontSize="16"/>
+                                    </HorizontalStackLayout>
+
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="1" Grid.Row="1">
+                                        <VerticalStackLayout Spacing="0">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Defektanzahl:     "/>
+                                                <Label Text="{Binding Anzahl}"/>
+                                            </HorizontalStackLayout>
+                                            <VerticalStackLayout>
+                                                <Label Text="Anmerkung: "/>
+                                                <Label Text="{Binding Anmerkung}" TextColor="OrangeRed"/>
+                                            </VerticalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </Frame>
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="3">
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

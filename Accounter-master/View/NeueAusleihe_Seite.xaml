@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Accounter.View.NeueAusleihe_Seite"
+             Title="NeueAusleihe_Seite"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:AusleiheVM"
+             Style="{StaticResource GlobalContentPageStyle}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="Body"/>
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="FontSize" Value="Body"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <VerticalStackLayout Margin="10">
+        <Label 
+                Text="{Binding ArtName}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"
+                FontSize="28" FontAttributes="Bold"/>
+        
+        <Image Source="{Binding Image}"
+               Aspect="AspectFill"
+               HeightRequest="200"
+               WidthRequest="200"
+               VerticalOptions="Center"
+               HorizontalOptions="Center"/>
+        
+        <Grid ColumnDefinitions="*,*"
+              RowDefinitions="*,*,*,*,*" 
+              RowSpacing="20"
+              Margin="10,10,10,30">
+
+            <Label Text="Artikel-ID: "
+                   Grid.Column="0"
+                   Grid.Row="0"/>
+            <Label  Grid.Column="1" Grid.Row="0"
+                    Text="{Binding ArtID}"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+
+            <Label Text="Kunden-ID: "
+                   Grid.Column="0"
+                   Grid.Row="1"/>
+            <Entry  Text="{Binding KundID}"
+                    WidthRequest="100"
+                    HorizontalTextAlignment="Center"
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Keyboard="Numeric"/>
+        
+            <Label Text="AusleihDatum: "
+                   Grid.Column="0"
+                   Grid.Row="2"/>
+            <DatePicker
+                       Date="{Binding AusleiheDatum}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center" 
+                       MinimumDate="01/01/2018"
+                       Grid.Column="1"
+                       Grid.Row="2">
+            </DatePicker>
+
+
+            <Label Text="Ausleihen bis: "
+                   Grid.Column="0"
+                   Grid.Row="3"/>
+            <DatePicker
+                        Date="{Binding AbgabeFrist}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center" 
+                        MinimumDate="01/01/2018"
+                        Grid.Column="1"
+                        Grid.Row="3">
+            </DatePicker>
+
+            <Label Text="Anzahl: "
+                   Grid.Column="0"
+                   Grid.Row="4"/>
+            <Entry  Text="{Binding ArtAnzahl}"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    Grid.Column="1"
+                    Grid.Row="4"
+                    Keyboard="Numeric"/>
+        </Grid>
+        
+        <Button Text="Ausleihen"
+                Command="{Binding ArtikelAusleihenCommand}"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                WidthRequest="200"
+                HeightRequest="50"
+                Margin="10"
+                FontSize="20"/>
+
+        <Button Text="Abbrechen"
+                    WidthRequest="130"
+                    HeightRequest="40"
+                    Background="DarkRed"
+                    CornerRadius="20"
+                    Command="{Binding AbbrechenCommand}"/>
+    </VerticalStackLayout>
+</ContentPage>

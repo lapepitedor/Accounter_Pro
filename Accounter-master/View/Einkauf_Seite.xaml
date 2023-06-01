@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Accounter.View.Einkauf_Seite"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:EinkaufVM"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="Backy">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="LightBlue" Offset="0.1"/>
+                            <GradientStop Color="GreenYellow" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="60,*,70"
+          RowSpacing="10" Style="{StaticResource Backy}">
+
+        <Frame Grid.Row="0"
+               BackgroundColor="Transparent"
+               Margin="2" Padding="5"
+               CornerRadius="20"
+               BorderColor="CornflowerBlue">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Entry 
+                   Placeholder="Einkauf-id suchen"
+                   PlaceholderColor="BlanchedAlmond"
+                   HeightRequest="70"
+                   WidthRequest="200"
+                   FontSize="15"
+                   Text="{Binding SearchedID}"/>
+                <Button
+                    Text="Suchen"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    Command="{Binding PerformSearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame     Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   Margin="5,0,5,5"
+                   CornerRadius="10" Padding="5"
+                   BorderColor="CornflowerBlue">
+
+            <CollectionView BackgroundColor="Transparent"
+                            ItemsSource="{Binding SearchedEinkaufsListe}"
+                            SelectionMode="Single"
+                            EmptyView="Noch keine Daten"
+                            >
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Einkauf">
+                        <SwipeView BackgroundColor="Transparent" Margin="0,5,0,0">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Löschen"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:EinkaufVM}},Path=DeleteEinkaufCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Update"
+                                               BackgroundColor="LightSeaGreen"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:EinkaufVM}},Path=UpdateEinkaufCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame HeightRequest="145"
+                                   Padding="3"
+                                   BackgroundColor="Cornsilk">
+                                <Grid ColumnDefinitions="110,*" RowDefinitions="30,105" RowSpacing="2" ColumnSpacing="5">
+
+                                    <Frame Grid.Column="0" 
+                                           Grid.Row="0" 
+                                           Grid.RowSpan="2" 
+                                           Padding="0" BackgroundColor="LightYellow">
+                                        <Image  
+                                            Source="{Binding Image}"
+                                            Aspect="AspectFill"
+                                            HeightRequest="120"
+                                            WidthRequest="110"/>
+                                    </Frame>
+                                    <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="5">
+                                        <Label 
+                                            Text="Bestell-ID: "
+                                            FontSize="16"/>
+                                        <Label   
+                                            Text="{Binding BestellID}"
+                                            FontSize="18"/>
+                                    </HorizontalStackLayout>
+
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="1" Grid.Row="1">
+                                        <VerticalStackLayout Spacing="0">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Bestellanzahl:     "/>
+                                                <Label Text="{Binding BestellAnzahl}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Einkaufspreis: "/>
+                                                <Label Text="{Binding EinkaufsPreis, StringFormat='{0} €'}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Bestelldatum:"/>
+                                                <Label Text="{Binding BestellDatum, StringFormat='{0:d}'}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Anmerkung: "/>
+                                                <Label Text="{Binding Anmerkung}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </Frame>
+        <Button Text="Neuer Einkauf" 
+                Grid.Row="2" 
+                Command="{Binding CreateNewEinkaufCommand}" 
+                BackgroundColor="CornflowerBlue" 
+                TextColor="White" 
+                FontSize="20"
+                HeightRequest="70"
+                WidthRequest="300"
+                Margin="5,5,5,15"/>
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="3">
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

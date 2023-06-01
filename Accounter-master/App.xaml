@@ -1,0 +1,59 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Accounter"
+             x:Class="Accounter.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="GlobalContentPageStyle" TargetType="ContentPage">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,1" EndPoint="1,1.5">
+                            <GradientStop Color="LightBlue" Offset="0"/>
+                            <GradientStop Color="Blue" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="CollectionView">
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="Black" Offset="10,20" Radius="40" Opacity="0.8"/>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Shadow">
+                    <Setter.Value>
+                        <Shadow Brush="Black" Offset="10,20" Radius="40" Opacity="0.5"/>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,3" EndPoint="1,1">
+                            <GradientStop Color="CornflowerBlue" Offset="0.1"/>
+                            <GradientStop Color="DarkOrchid" Offset="0.7"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="30"/>
+            </Style>
+            <Style TargetType="Frame" x:Key="FrameBacky">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,3" EndPoint="1,1">
+                            <GradientStop Color="White" Offset="0.1"/>
+                            <GradientStop Color="LightBlue" Offset="1.0"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

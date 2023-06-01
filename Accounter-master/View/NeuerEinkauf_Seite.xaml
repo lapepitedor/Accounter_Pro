@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Accounter.View.NeuerEinkauf_Seite"
+             Title="NeuerEinkauf_Seite"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:EinkaufVM"
+             Style="{StaticResource GlobalContentPageStyle}">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+        <Style TargetType="ContentPage">
+            <Setter Property="BackgroundColor">
+                <Setter.Value >
+                    <Color>AliceBlue</Color>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="Grid" x:Key="Backy">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="LightBlue" Offset="0.1"/>
+                        <GradientStop Color="GreenYellow" Offset="0.9"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="80,*,100"
+          RowSpacing="5"
+          Style="{StaticResource Backy}">
+
+        <Rectangle Grid.Row="0"
+                   Fill="DarkBlue"/>
+        <Label Grid.Row="0"
+               Text="Neuer Einkauf" 
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               FontSize="Title"
+               TextColor="White"/>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*"
+              RowDefinitions="*,*,*,*,*,50">
+
+            <Frame Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout>
+                    <Label Text="Bestelldatum:" Margin="10,10,0,0"/>
+                    <DatePicker Date="{Binding BestellDatum}" WidthRequest="150" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout>
+                    <Label Text="Bestellanzahl:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding BestellAnzahl}" WidthRequest="150" Keyboard="Numeric"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Einkaufspreis:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding EinkaufsPreis}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Anmerkung:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding Anmerkung}" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            
+            <Frame
+                Grid.Row="5" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="2" 
+                BackgroundColor="Beige">
+            </Frame>
+            <HorizontalStackLayout Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" Spacing="10">
+                <Label Text="Foto auswählen:" VerticalOptions="Center"/>
+                <Button Text="Foto auswählen" VerticalOptions="Center" Command="{Binding FotoAuswahlCommand}"/>
+            </HorizontalStackLayout>
+
+        </Grid>
+
+        <Rectangle Grid.Row="2"
+                   Style="{StaticResource FrameBacky}"/>
+        <VerticalStackLayout Grid.Row="2"
+                             Spacing="5">
+            <Button Text="Hinzufügen"
+                    HorizontalOptions="Center"
+                    Command="{Binding AddEinkaufCommand}"
+                    WidthRequest="230"
+                    HeightRequest="50"
+                    FontSize="20"/>
+            <Button Text="Abbrechen"
+                    WidthRequest="130"
+                    HeightRequest="40"
+                    Background="DarkRed"
+                    CornerRadius="20"
+                    Command="{Binding AbbrechenCommand}"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

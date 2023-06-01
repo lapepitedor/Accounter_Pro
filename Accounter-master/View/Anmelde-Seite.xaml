@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:Accounter.ViewModels"
+             x:Class="Accounter.View.Anmelde_Seite"
+             Title="{Binding Title}"
+             x:DataType="viewmodel:Anmelde_SeiteViewModel">
+    
+    <ContentPage.Resources>
+        <LinearGradientBrush x:Key="myGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="LightBlue" Offset="0"/>
+            <GradientStop Color="Blue" Offset="1"/>
+        </LinearGradientBrush>
+        <Shadow x:Key="logoShadow" Brush="Black" Offset="10,10" Opacity="0.5" Radius="10"/>
+    </ContentPage.Resources>
+
+
+    <Grid RowDefinitions="150,*">
+
+        <Grid Grid.Row="0" 
+              Background="{StaticResource myGradient}">
+            
+            <Image Source="what.png" Shadow="{StaticResource logoShadow}"/>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Background="{StaticResource myGradient}" 
+              RowDefinitions="auto,auto,auto,auto" 
+              RowSpacing="20">
+
+            <Label Text="Anmelden" 
+                   HorizontalOptions="Center" 
+                   Padding="10" FontSize="30" 
+                   TextColor="White" 
+                   Grid.Row="0" 
+                   Margin="10,10,10,5"></Label>
+
+            <VerticalStackLayout Grid.Row="1" 
+                                 WidthRequest="260">
+                <Label Text="Benutzername" 
+                       Padding="10"  
+                       FontSize="Subtitle" 
+                       TextColor="#FFF6F6"/>
+
+                <Border  StrokeThickness="1"
+                         StrokeShape="RoundRectangle 10,10,10,10"
+                         WidthRequest="250"
+                         HeightRequest="50">
+                    <Entry Text="{Binding Benutzername}"></Entry>
+                </Border>
+            </VerticalStackLayout>
+            
+            <VerticalStackLayout Grid.Row="2" WidthRequest="260">
+                <Label Text="Passwort" 
+                       Padding="10" 
+                       Grid.Row="3" 
+                       FontSize="Subtitle" 
+                       TextColor="#FFF6F6"/>
+
+                <Border  Grid.Row="4"
+                         StrokeThickness="1"
+                         StrokeShape="RoundRectangle 10,10,10,10"
+                         WidthRequest="250"
+                         HeightRequest="50">
+                    <Entry Text="{Binding Passwort}" IsPassword="True"></Entry>
+                </Border>
+            </VerticalStackLayout>
+
+            <Button Text="anmelden" 
+                    Grid.Row="3" 
+                    Padding="10" 
+                    HeightRequest="50" 
+                    WidthRequest="250" 
+                    Margin="20"
+                    HorizontalOptions="Center"
+                    Command="{Binding AnmeldenCommand}">
+            </Button>
+            <!--<Button Text="Show List of Benutzer"
+                    Grid.Row="3"
+                    Command="{Binding ShowListCommand}">
+            </Button>
+            <Button Text="Benutzer löschen"
+                    Grid.Row="2"
+                    Command="{Binding DeleteBenutzerCommand}"
+                    HeightRequest="50"
+                    WidthRequest="60">
+            </Button>
+            <CollectionView Grid.Row="0" ItemsSource="{Binding BenutzerListe}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding Benutzername}" />
+                            <Label Text="{Binding Passwort}" />
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>-->
+            <ActivityIndicator IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="4"
+                               Color="WhiteSmoke">
+            </ActivityIndicator>
+        </Grid>
+    </Grid>
+</ContentPage>

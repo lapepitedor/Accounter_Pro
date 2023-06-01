@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:AusleiheVM"
+             x:Class="Accounter.View.Ausleihe_Seite"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             NavigationPage.HasNavigationBar="True">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="Backy">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="LightBlue" Offset="0.1"/>
+                            <GradientStop Color="Orchid" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontSize" Value="13"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid RowDefinitions="60,*"
+          RowSpacing="10"
+          Style="{StaticResource Backy}">
+
+        <Frame Grid.Row="0"
+               BackgroundColor="Transparent"
+               Margin="2" Padding="5"
+               CornerRadius="20"
+               BorderColor="CornflowerBlue">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Entry 
+                   Placeholder="Ausleihe suchen"
+                   PlaceholderColor="BlanchedAlmond"
+                   HeightRequest="70"
+                   WidthRequest="200"
+                   FontSize="15"
+                   Text="{Binding SearchedWord}"/>
+                <Button
+                    Text="Suchen"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    Command="{Binding PerformSearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame     Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   Margin="5,0,5,5"
+                   CornerRadius="10" Padding="5"
+                   BorderColor="CornflowerBlue">
+
+            <CollectionView BackgroundColor="Transparent"
+                            ItemsSource="{Binding SearchedAusleiheListe}"
+                            SelectionMode="Single"
+                            EmptyView="Noch keine Daten"
+                            >
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Ausleihe">
+                        <SwipeView BackgroundColor="Transparent" Margin="0,5,0,0">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Löschen"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:AusleiheVM}},Path=DeleteArtikelCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Update"
+                                               BackgroundColor="LightSeaGreen"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:AusleiheVM}},Path=UpdateArtikelCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame HeightRequest="175"
+                                   Padding="3"
+                                   BackgroundColor="Cornsilk">
+                                <Grid ColumnDefinitions="110,220" RowDefinitions="*,2*" RowSpacing="2" ColumnSpacing="5">
+
+                                    <Frame Grid.Column="0" 
+                                           Grid.Row="0" 
+                                           Grid.RowSpan="2" 
+                                           Padding="0" BackgroundColor="LightYellow">
+                                        <Image  
+                                            Source="{Binding Image}"
+                                            Aspect="AspectFill"
+                                            HeightRequest="120"
+                                            WidthRequest="100"/>
+                                    </Frame>
+                                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="1">
+                                        <Label   
+                                            Text="{Binding ArtName}"
+                                            FontSize="18"/>
+                                        <HorizontalStackLayout>
+                                        <Label 
+                                            Text="Artikel-Id: "
+                                            FontSize="12"/>
+                                        <Label   
+                                            Text="{Binding ArtID}"
+                                            FontSize="12"/>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="1" Grid.Row="1">
+                                        <VerticalStackLayout Spacing="2">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Kunden-ID:     "/>
+                                                <Label Text="{Binding KundID}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Artikelanzahl: "/>
+                                                <Label Text="{Binding ArtAnzahl}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Ausleihdatum:"/>
+                                                <Label Text="{Binding AusleiheDatum, StringFormat='{0:d}'}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Abgabefrist:    "/>
+                                                <Label Text="{Binding AbgabeFrist, StringFormat='{0:d}'}" TextColor="Red"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </Frame>
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="3">
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>

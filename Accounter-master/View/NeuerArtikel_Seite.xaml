@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:ArtikelVM"
+             x:Class="Accounter.View.NeuerArtikel_Seite"
+             Title="NeuerArtikel_Seite">
+    <ContentPage.Resources>
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="TextColor" Value="Black"/>
+        </Style>
+        <Style TargetType="ContentPage">
+            <Setter Property="BackgroundColor">
+                <Setter.Value >
+                    <!--<OnPlatform x:TypeArguments="Color">
+                        <On Platform="Android" Value="White"/>
+                        <On Platform="iOS" Value="White"/>
+                        <On Platform="UWP" Value="White"/>
+                    </OnPlatform>-->
+                    <Color>AliceBlue</Color>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="80,*,100"
+          RowSpacing="5">
+
+        <Rectangle Grid.Row="0"
+                   Fill="DarkBlue"/>
+        <Label Grid.Row="0"
+               Text="Neuer Artikel" 
+               HorizontalOptions="Center"
+               VerticalOptions="Center"
+               FontSize="Title"
+               TextColor="White"/>
+
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,*"
+              RowDefinitions="*,*,*,*,*,50">
+            
+            <Frame Grid.Column="0" Grid.Row="0" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout>
+                    <Label Text="Artikelname:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding ArtName}" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="0" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout>
+                    <Label Text="Lagerplatz:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding LagerPlatz}" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="0" Grid.Row="1" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Preis/Tag:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding PreisProTag}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="1" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Bestand:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding Anzahllager}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="0" Grid.Row="2" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout >
+                    <Label Text="Preis/Gesamt:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding PreisGesamt}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="2" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout >
+                    <Label Text="Bestandlimit:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding BestandLimit}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="0" Grid.Row="3" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Ablaufdatum:" Margin="10,10,0,0"/>
+                    <DatePicker Date="{Binding AblaufsDatum}" WidthRequest="150" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="3" BackgroundColor="Transparent" Padding="0" BorderColor="DeepSkyBlue">
+                <VerticalStackLayout >
+                    <Label Text="Näch. Prüfdatum:" Margin="5,10,0,0"/>
+                    <DatePicker Date="{Binding NaechstePruefDatum}" WidthRequest="150" MinimumDate="01/01/2023"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="0" Grid.Row="4" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout >
+                    <Label Text="Ausleihbar:" Margin="10,10,0,0"/>
+                    <CheckBox IsChecked="{Binding Ausleihbar}"
+                              Color="Wheat" 
+                              ScaleX="2" ScaleY="2"/>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame Grid.Column="1" Grid.Row="4" BackgroundColor="Transparent" Padding="0" BorderColor="CadetBlue">
+                <VerticalStackLayout >
+                    <Label Text="Barcode:" Margin="10,10,0,0"/>
+                    <Entry Text="{Binding Barcode}" Keyboard="Numeric" WidthRequest="150"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame
+                Grid.Row="5" 
+                Grid.Column="0" 
+                Grid.ColumnSpan="2" 
+                BackgroundColor="Beige">
+            </Frame>
+            <HorizontalStackLayout Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" HorizontalOptions="Center" Spacing="10">
+                <Label Text="Foto auswählen:" VerticalOptions="Center"/>
+                <Button Text="Foto auswählen" VerticalOptions="Center" Command="{Binding FotoAuswahlCommand}"/>
+            </HorizontalStackLayout>
+
+        </Grid>
+        
+        <Rectangle Grid.Row="2"
+                   Style="{StaticResource FrameBacky}"/>
+        <VerticalStackLayout Grid.Row="2"
+                             Spacing="5">
+            <Button Text="Hinzufügen"
+                    HorizontalOptions="Center"
+                    Command="{Binding AddArtikelCommand}"
+                    WidthRequest="230"
+                    HeightRequest="50"
+                    FontSize="20"/>
+            <Button Text="Abbrechen"
+                    WidthRequest="130"
+                    HeightRequest="40"
+                    Background="DarkRed"
+                    CornerRadius="20"
+                    Command="{Binding AbbrechenCommand}"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

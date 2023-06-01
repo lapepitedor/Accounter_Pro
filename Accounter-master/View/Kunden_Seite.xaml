@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Accounter.View.Kunden_Seite"
+             xmlns:Models="clr-namespace:Accounter.Models"
+             xmlns:ViewModels="clr-namespace:Accounter.ViewModels"
+             x:DataType="ViewModels:KundenVM"
+             Title="{Binding Title}"
+             Style="{StaticResource GlobalContentPageStyle}"
+             NavigationPage.HasNavigationBar="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Grid" x:Key="Backy">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="LightBlue" Offset="0.1"/>
+                            <GradientStop Color="LightGreen" Offset="0.9"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="60,*,70"
+          RowSpacing="10"
+          Style="{StaticResource Backy}">
+
+        <Frame Grid.Row="0"
+               BackgroundColor="Transparent"
+               Margin="2" Padding="5"
+               CornerRadius="20"
+               BorderColor="CornflowerBlue">
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="CenterAndExpand">
+                <Entry 
+                   Placeholder="Kunden suchen"
+                   PlaceholderColor="BlanchedAlmond"
+                   HeightRequest="70"
+                   WidthRequest="200"
+                   FontSize="15"
+                   Text="{Binding SearchedName}"/>
+                <Button
+                    Text="Suchen"
+                    HeightRequest="70"
+                    WidthRequest="100"
+                    Command="{Binding PerformSearchCommand}"
+                    IsEnabled="{Binding IsNotBusy}"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <Frame     Grid.Row="1"
+                   BackgroundColor="Transparent"
+                   Margin="5,0,5,5"
+                   CornerRadius="10" Padding="5"
+                   BorderColor="CornflowerBlue">
+
+            <CollectionView BackgroundColor="Transparent"
+                            ItemsSource="{Binding SearchedKundenListe}"
+                            SelectionMode="Single"
+                            EmptyView="Noch keine Daten"
+                            >
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="Models:Kunde">
+                        <SwipeView BackgroundColor="Transparent" Margin="0,5,0,0">
+                            <SwipeView.RightItems>
+                                <SwipeItems Mode="Reveal">
+                                    <SwipeItem Text="Löschen"
+                                               BackgroundColor="Red"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:KundenVM}},Path=DeleteKundeCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                    <SwipeItem Text="Update"
+                                               BackgroundColor="LightSeaGreen"
+                                               Command="{Binding Source={x:RelativeSource AncestorType={x:Type ViewModels:KundenVM}},Path=UpdateKundeCommand}"
+                                               CommandParameter="{Binding .}"/>
+                                </SwipeItems>
+                            </SwipeView.RightItems>
+                            <Frame HeightRequest="135"
+                                   Padding="3"
+                                   BackgroundColor="Cornsilk">
+                                <Grid ColumnDefinitions="100,220" RowDefinitions="40,80" RowSpacing="2" ColumnSpacing="5">
+
+                                    <Frame Grid.Column="0" 
+                                           Grid.Row="0" 
+                                           Grid.RowSpan="2" 
+                                           Padding="0" BackgroundColor="LightYellow">
+                                        <Image  
+                                            Source="user.png"
+                                            Aspect="AspectFill"
+                                            HeightRequest="120"
+                                            WidthRequest="120"/>
+                                    </Frame>
+                                    <HorizontalStackLayout Grid.Column="1" Grid.Row="0" Spacing="5">
+                                        <Label 
+                                            Text="Name: "
+                                            FontSize="16"/>
+                                        <Label   
+                                            Text="{Binding KundName}"
+                                            FontSize="18"/>
+                                    </HorizontalStackLayout>
+
+                                    <Frame  BackgroundColor="SeaShell" Padding="3" Grid.Column="1" Grid.Row="1">
+                                        <VerticalStackLayout Spacing="0">
+                                            <HorizontalStackLayout>
+                                                <Label Text="Kunden-ID:     "/>
+                                                <Label Text="{Binding KundID}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Matrik.Nr: "/>
+                                                <Label Text="{Binding Matrik}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="E-mail:"/>
+                                                <Label Text="{Binding Email}"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout>
+                                                <Label Text="Vermerk: "/>
+                                                <Label Text="{Binding Vermerk}"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Frame>
+                                </Grid>
+                            </Frame>
+                        </SwipeView>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+        </Frame>
+        <Button Text="Neuer Einkauf" 
+                Grid.Row="2" 
+                Command="{Binding NeuerKunden_SeiteCommand}" 
+                BackgroundColor="CornflowerBlue" 
+                TextColor="White" 
+                FontSize="20"
+                HeightRequest="70"
+                WidthRequest="300"
+                Margin="5,5,5,15"/>
+        <ActivityIndicator     IsVisible="{Binding IsBusy}"
+                               IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="FillAndExpand"
+                               VerticalOptions="CenterAndExpand"
+                               Grid.RowSpan="3">
+        </ActivityIndicator>
+    </Grid>
+</ContentPage>
